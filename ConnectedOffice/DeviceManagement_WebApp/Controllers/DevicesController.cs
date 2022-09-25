@@ -63,7 +63,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             device.DeviceId = Guid.NewGuid();
             _deviceRepository.Add(device);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
 
@@ -102,7 +101,6 @@ namespace DeviceManagement_WebApp.Controllers
             try
             {
                 _deviceRepository.Update(device);
-                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -145,7 +143,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             var device = await _context.Device.FindAsync(id);
             _deviceRepository.Remove(device);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

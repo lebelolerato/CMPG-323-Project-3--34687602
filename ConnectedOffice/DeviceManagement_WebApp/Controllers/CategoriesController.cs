@@ -60,7 +60,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             category.CategoryId = Guid.NewGuid();
             _categoryRepository.Add(category);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -95,7 +94,6 @@ namespace DeviceManagement_WebApp.Controllers
             try
             {
                 _categoryRepository.Update(category);
-                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -137,7 +135,6 @@ namespace DeviceManagement_WebApp.Controllers
         {
             var category = await _context.Category.FindAsync(id);
             _categoryRepository.Remove(category);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
