@@ -31,5 +31,8 @@ namespace DeviceManagement_WebApp.Repositories
 
         //This method is used by the DeviceController to show data from Categories and Zones when adding a new device
         IEnumerable<C> GetList<C>() where C : class;
+
+        //To confirm if i wanna delete or not
+        public void DeleteConfirmed(Guid? id, T entity);
     }
 }

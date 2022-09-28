@@ -63,5 +63,12 @@ namespace DeviceManagement_WebApp.Repositories
         {
             return _context.Set<C>().ToList();
         }
+
+        public void DeleteConfirmed (Guid? id, T entity)
+        {
+            GetById(id);
+            _context.Set<T>().Remove(entity);
+            _context.SaveChangesAsync();
+        }
     }
 }

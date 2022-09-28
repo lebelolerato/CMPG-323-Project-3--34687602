@@ -134,11 +134,9 @@ namespace DeviceManagement_WebApp.Controllers
         // POST: Zones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id, Zone zone)
         {
-            var zone = await _context.Zone.FindAsync(id);
-            _context.Zone.Remove(zone);
-            await _context.SaveChangesAsync();
+            _zoneRepository.DeleteConfirmed(id, zone);
             return RedirectToAction(nameof(Index));
         }
 

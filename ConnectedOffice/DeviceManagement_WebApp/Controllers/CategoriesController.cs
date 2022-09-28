@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DeviceManagement_WebApp.Data;
 using DeviceManagement_WebApp.Models;
 using DeviceManagement_WebApp.Repositories;
+using System.Security.Policy;
 
 namespace DeviceManagement_WebApp.Controllers
 {
@@ -131,11 +132,9 @@ namespace DeviceManagement_WebApp.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id, Category category)
         {
-            var category = await _context.Category.FindAsync(id);
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
+            _categoryRepository.DeleteConfirmed(id, category);
             return RedirectToAction(nameof(Index));
         }
 
