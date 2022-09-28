@@ -38,6 +38,7 @@ namespace DeviceManagement_WebApp.Repositories
         public void Remove(T entity)
         {
             _context.Set<T>().Remove(entity);
+            _context.SaveChangesAsync();
         }
         public void RemoveRange(IEnumerable<T> entities)
         {
@@ -47,8 +48,20 @@ namespace DeviceManagement_WebApp.Repositories
         public void Update(T entity)
         {
             _context.Update(entity);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
+        }
+        public bool Exist(Guid? id)
+        {
+            if (_context.Set<T>().Find(id) != null)
+            {
+                return true;
+            }
+            return false;
+        }
 
+        public IEnumerable<C> GetList<C>() where C: class
+        {
+            return _context.Set<C>().ToList();
         }
     }
 }

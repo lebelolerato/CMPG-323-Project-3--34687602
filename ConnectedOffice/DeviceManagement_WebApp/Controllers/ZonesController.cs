@@ -137,13 +137,14 @@ namespace DeviceManagement_WebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var zone = await _context.Zone.FindAsync(id);
-            _zoneRepository.Remove(zone);
+            _context.Zone.Remove(zone);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ZoneExists(Guid id)
         {
-            return _context.Zone.Any(e => e.ZoneId == id);
+            return _zoneRepository.Exist(id);
         }
     }
 }

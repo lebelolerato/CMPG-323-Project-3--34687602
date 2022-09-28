@@ -25,7 +25,7 @@ namespace DeviceManagement_WebApp.Controllers
         // GET: Devices
         public async Task<IActionResult> Index()
         {
-            var connectedOfficeContext = _context.Device.Include(d => d.Category).Include(d => d.Zone);
+
             return View(_deviceRepository.GetAll());
         }
 
@@ -49,8 +49,8 @@ namespace DeviceManagement_WebApp.Controllers
         // GET: Devices/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
-            ViewData["ZoneId"] = new SelectList(_context.Zone, "ZoneId", "ZoneName");
+            ViewData["CategoryId"] = new SelectList(_deviceRepository.GetList<Category>(), "CategoryId", "CategoryName");
+            ViewData["ZoneId"] = new SelectList(_deviceRepository.GetList<Zone>(), "ZoneId", "ZoneName");
             return View();
         }
 
@@ -82,8 +82,8 @@ namespace DeviceManagement_WebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", device.CategoryId);
-            ViewData["ZoneId"] = new SelectList(_context.Zone, "ZoneId", "ZoneName", device.ZoneId);
+            ViewData["CategoryId"] = new SelectList(_deviceRepository.GetList<Category>(), "CategoryId", "CategoryName", device.CategoryId);
+            ViewData["ZoneId"] = new SelectList(_deviceRepository.GetList<Zone>(), "ZoneId", "ZoneName", device.ZoneId);
             return View(device);
         }
 
@@ -142,13 +142,14 @@ namespace DeviceManagement_WebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var device = await _context.Device.FindAsync(id);
-            _deviceRepository.Remove(device);
+            _context.Device.Remove(device);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DeviceExists(Guid id)
         {
-            return _context.Device.Any(e => e.DeviceId == id);
+            return _deviceRepository.Exist(id);
         }
     }
 }
